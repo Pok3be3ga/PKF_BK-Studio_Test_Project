@@ -5,15 +5,10 @@ namespace Exoa.Cameras.Demos
 {
     public class FocusOnClick : TouchSelectableBehaviour
     {
-        private ObjectsData _objectsData;
 
         public bool follow;
         public bool focusOnFollow;
         public bool allowYoffset;
-        public void Init(ObjectsData objectsData)
-        {
-            _objectsData = objectsData;
-        }
         public bool Focus
         {
             get => follow == false || (follow == true && focusOnFollow);
@@ -25,7 +20,7 @@ namespace Exoa.Cameras.Demos
         protected override void OnSelected(TouchSelect select)
         {
             print("OnSelected " + gameObject.name);
-            _objectsData.HightLightCell(gameObject);
+            S_ObjectsSettings.Instance.HightLightCell(gameObject.GetComponent<Object>());
             if (follow)
                 CameraEvents.OnRequestObjectFollow?.Invoke(gameObject, focusOnFollow, allowYoffset);
             else

@@ -4,11 +4,9 @@ using UnityEngine.UI;
 
 public class AlfaButtons : MonoBehaviour
 {
-    private ObjectsData _objectsData;
     private List<Button> _buttons = new List<Button>();
-    public void Init(ObjectsData objectsData)
+    public void Init()
     {
-        _objectsData = objectsData;
         foreach (Transform child in transform)
         {
             if (child.GetComponent<Button>())
@@ -24,9 +22,9 @@ public class AlfaButtons : MonoBehaviour
     }
     private void ChangeAlfa(int idx)
     {
-        for (int i = 0; i < _objectsData.GetSelectObjects().Count; i++)
+        for (int i = 0; i < S_ObjectsSettings.Instance.GetSelectObjects().Count; i++)
         {
-            _objectsData.GetSelectObjects()[i].GetComponent<MeshRenderer>().material.color = _buttons[idx].image.color;
+            S_ObjectsSettings.Instance.GetSelectObjects()[i].GetComponent<MeshRenderer>().material.color = _buttons[idx].image.color;
         }
 
     }

@@ -2,11 +2,17 @@ using System.Collections.Generic;
 using Exoa.Cameras.Demos;
 using UnityEngine;
 
-public class ObjectsData : MonoBehaviour
+public sealed class S_ObjectsSettings : MonoBehaviour
 {
+    public static S_ObjectsSettings Instance;
+
     private ObjectCellsSettings _objectCellsSettings;
-    private List<GameObject> _objects = new List<GameObject>();//Все объекты которые есть на сцене
-    private List<GameObject> _selectObjects = new List<GameObject>();//Объекты выбранные пользователем
+    private List<Object> _objects = new List<Object>();//Все объекты которые есть на сцене
+    private List<Object> _selectObjects = new List<Object>();//Объекты выбранные пользователем
+    private void Awake()
+    {
+        Instance = this;
+    }
     public void Init(ObjectCellsSettings objectCellsSettings)
     {
         //Добавляем дочерние объекты в список
@@ -14,8 +20,7 @@ public class ObjectsData : MonoBehaviour
         {
             if (child.gameObject.activeSelf)
             {
-                _objects.Add(child.gameObject);
-                child.GetComponent<FocusOnClick>().Init(this);
+                _objects.Add(child.GetComponent<Object>());
             }
         }
         _objectCellsSettings = objectCellsSettings;
@@ -23,16 +28,16 @@ public class ObjectsData : MonoBehaviour
 
 
     //Обьекты на сцене
-    public List<GameObject> GetListObjects()
+    public List<Object> GetListObjects()
     {
         return _objects;
     }
-    public GameObject GetObject(int index)
+    public Object GetObject(int index)
     {
         return _objects[index];
     }
     //Выбранные Объекты
-    public void SelectObject(GameObject go)
+    public void SelectObject(Object go)
     {
 
         if (_selectObjects.Contains(go))
@@ -43,18 +48,19 @@ public class ObjectsData : MonoBehaviour
         {
             _selectObjects.Add(go);
         }
-    } 
-    public void HightLightCell(GameObject go)
-    {
-        int index = _objects.IndexOf(go);
-        _objectCellsSettings.HightLightCell(index);
     }
-    public void RemoveSelectObject(GameObject go)
+    public void RemoveSelectObject(Object go)
     {
         _selectObjects.Remove(go);
     }
-    public List<GameObject> GetSelectObjects()
+    public List<Object> GetSelectObjects()
     {
         return _selectObjects;
+    }
+    //Подсветить кнопку выбранного объекта
+    public void HightLightCell(Object go)
+    {
+        int index = _objects.IndexOf(go);
+        _objectCellsSettings.HightLightCell(index);
     }
 }

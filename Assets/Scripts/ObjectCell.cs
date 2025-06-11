@@ -4,15 +4,13 @@ using UnityEngine.UI;
 
 public class ObjectCell : MonoBehaviour
 {
-    private ObjectsData _objectsData;
     private Button _button;
     [SerializeField] public Toggle SelectToggle;
     [SerializeField] public Toggle HiddenToggle;
-    [SerializeField] private GameObject _cellObject;
-    public void Init(GameObject @object, ObjectsData objectsData)
+    [SerializeField] private Object _cellObject;
+    public void Init(Object @object)
     {
         _cellObject = @object;
-        _objectsData = objectsData;
         _button = GetComponent<Button>();
         _button.onClick.AddListener(FocusObject);
         SelectToggle.onValueChanged.AddListener(SelectObject);
@@ -22,12 +20,12 @@ public class ObjectCell : MonoBehaviour
     {
         if (isOn == true)
         {
-            _objectsData.SelectObject(_cellObject);
+            S_ObjectsSettings.Instance.SelectObject(_cellObject);
             _button.Select();
         }
         else
         {
-            _objectsData.RemoveSelectObject(_cellObject);
+            S_ObjectsSettings.Instance.RemoveSelectObject(_cellObject);
         }
     }
     public void HiddenObject(bool isOn)
@@ -40,6 +38,6 @@ public class ObjectCell : MonoBehaviour
     }
     private void FocusObject()
     {
-        CameraEvents.OnRequestObjectFocus?.Invoke(_cellObject, true);
+        CameraEvents.OnRequestObjectFocus?.Invoke(_cellObject.gameObject, true);
     }
 } 
